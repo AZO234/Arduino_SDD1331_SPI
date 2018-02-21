@@ -1,0 +1,37 @@
+#######################################
+# Syntax Coloring Map For SSD1306_I2C
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+SSD1331_SPI	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+Initialize	KEYWORD2
+GetMaxX	KEYWORD2
+GetMaxY	KEYWORD2
+Clear	KEYWORD2
+SetBrightness	KEYWORD2
+DrawPixel	KEYWORD2
+DrawLine	KEYWORD2
+DrawRectangle	KEYWORD2
+DrawRectangleFill	KEYWORD2
+ActivateScroll	KEYWORD2
+DeactivateScroll	KEYWORD2
+IsSleep	KEYWORD2
+Sleep	KEYWORD2
+Wakeup	KEYWORD2
+
+#######################################
+# Instances (KEYWORD2)
+#######################################
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
