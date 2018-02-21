@@ -13,4 +13,6 @@ Reference
 ---------
 - フルカラー OLED SSD1331 を ESP32 ( ESP-WROOM-32 )で動かしてみた | mgo-tec電子工作  
 https://www.mgo-tec.com/blog-entry-esp32-oled-ssd1331.html
+- 円を描く (1)円弧描画のアルゴリズム
+http://fussy.web.fc2.com/algo/algo2-1.htm
 

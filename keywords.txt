@@ -21,6 +21,8 @@ DrawPixel	KEYWORD2
 DrawLine	KEYWORD2
 DrawRectangle	KEYWORD2
 DrawRectangleFill	KEYWORD2
+DrawCircle	KEYWORD2
+DrawCircleFill	KEYWORD2
 ActivateScroll	KEYWORD2
 DeactivateScroll	KEYWORD2
 IsSleep	KEYWORD2

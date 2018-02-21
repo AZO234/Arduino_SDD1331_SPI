@@ -284,6 +284,60 @@ void SSD1331_SPI::DrawRectangleFill(const unsigned int uiX1, const unsigned int 
 	this->CommandWriteBytes(aucCommands, 13);
 }
 
+void SSD1331_SPI::DrawCircle(const unsigned int uiX, const unsigned int uiY, const unsigned int uiR, const unsigned int uiColor) {
+	int iX = uiR;
+	int iY = 0;
+	int iF = -2 * uiR + 3;
+
+	while(iX >= iY) {
+		this->DrawPixel(uiX + iX, uiY + iY, uiColor);
+		this->DrawPixel(uiX - iX, uiY + iY, uiColor);
+		this->DrawPixel(uiX + iX, uiY - iY, uiColor);
+		this->DrawPixel(uiX - iX, uiY - iY, uiColor);
+		this->DrawPixel(uiX + iY, uiY + iX, uiColor);
+		this->DrawPixel(uiX - iY, uiY + iX, uiColor);
+		this->DrawPixel(uiX + iY, uiY - iX, uiColor);
+		this->DrawPixel(uiX - iY, uiY - iX, uiColor);
+		if(iF >= 0) {
+			iX--;
+			iF -= 4 * iX;
+		}
+		iY++;
+		iF += 4 * iY + 2;
+	}
+}
+
+void SSD1331_SPI::DrawCircleFill(const unsigned int uiX, const unsigned int uiY, const unsigned int uiR, const unsigned int uiLineColor, const unsigned int uiFillColor) {
+	int iX = uiR;
+	int iY = 0;
+	int iF = -2 * uiR + 3;
+
+	while(iX >= iY) {
+		this->DrawPixel(uiX + iX, uiY + iY, uiLineColor);
+		this->DrawPixel(uiX - iX, uiY + iY, uiLineColor);
+		this->DrawLine(uiX - iX + 1, uiY + iY, uiX + iX - 1, uiY + iY, uiFillColor);
+		this->DrawPixel(uiX + iX, uiY - iY, uiLineColor);
+		this->DrawPixel(uiX - iX, uiY - iY, uiLineColor);
+		this->DrawLine(uiX - iX + 1, uiY - iY, uiX + iX - 1, uiY - iY, uiFillColor);
+		this->DrawPixel(uiX + iY, uiY + iX, uiLineColor);
+		this->DrawPixel(uiX - iY, uiY + iX, uiLineColor);
+		if(iY < uiR) {
+			this->DrawLine(uiX + iY - 1, uiY + iX, uiX - iY + 1, uiY + iX, uiFillColor);
+		}
+		this->DrawPixel(uiX + iY, uiY - iX, uiLineColor);
+		this->DrawPixel(uiX - iY, uiY - iX, uiLineColor);
+		if(iY < uiR) {
+			this->DrawLine(uiX + iY - 1, uiY - iX, uiX - iY + 1, uiY - iX, uiFillColor);
+		}
+		if(iF >= 0) {
+			iX--;
+			iF -= 4 * iX;
+		}
+		iY++;
+		iF += 4 * iY + 2;
+	}
+}
+
 void SSD1331_SPI::ActivateScroll(const unsigned int uiX, const unsigned int uiY, const unsigned int uiInterval) {
 	unsigned char aucCommands[7];
 
