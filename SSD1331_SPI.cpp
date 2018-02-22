@@ -324,6 +324,7 @@ void SSD1331_SPI::DrawCircleFill(const unsigned int uiX, const unsigned int uiY,
 	unsigned int uiUX1, uiUX2;
 	int iX = uiR;
 	int iY = 0;
+	int iPre = this->ucMaxY;
 	int iF = -2 * uiR + 3;
 
 	if(uiR == 0) {
@@ -345,19 +346,22 @@ void SSD1331_SPI::DrawCircleFill(const unsigned int uiX, const unsigned int uiY,
 		if(uiY >= iY) {
 			this->DrawLine(uiUX1, uiY - iY, uiUX2, uiY - iY, uiFillColor);
 		}
-		uiUX1 = uiX + iY;
-		if(uiUX1 >= this->ucMaxX) {
-			uiUX1 = this->ucMaxX - 1;
-		}
-		uiUX2 = uiX - iY;
-		if(uiX < iY) {
-			uiUX2 = 0;
-		}
-		if(uiY + iX < this->ucMaxY) {
-			this->DrawLine(uiUX1, uiY + iX, uiUX2, uiY + iX, uiFillColor);
-		}
-		if(uiY >= iX) {
-			this->DrawLine(uiUX1, uiY - iX, uiUX2, uiY - iX, uiFillColor);
+		if(iPre != uiY + iX) {
+			uiUX1 = uiX + iY;
+			if(uiUX1 >= this->ucMaxX) {
+				uiUX1 = this->ucMaxX - 1;
+			}
+			uiUX2 = uiX - iY;
+			if(uiX < iY) {
+				uiUX2 = 0;
+			}
+			if(uiY + iX < this->ucMaxY) {
+				this->DrawLine(uiUX1, uiY + iX, uiUX2, uiY + iX, uiFillColor);
+			}
+			if(uiY >= iX) {
+				this->DrawLine(uiUX1, uiY - iX, uiUX2, uiY - iX, uiFillColor);
+			}
+			iPre = uiY + iX;
 		}
 		if(iF >= 0) {
 			iX--;
