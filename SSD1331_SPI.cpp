@@ -161,32 +161,41 @@ void SSD1331_SPI::DrawPixel(const unsigned int uiX, const unsigned int uiY, cons
 	DataWriteBytes(aucDatas, 2);
 }
 
-void SSD1331_SPI::DrawLine(const unsigned int uiX1, const unsigned int uiY1, const unsigned int uiX2, const unsigned int uiY2, const unsigned int uiColor) {
+void SSD1331_SPI::DrawLine(const int iX1, const int iY1, const int iX2, const int iY2, const unsigned int uiColor) {
 	unsigned char aucCommands[8];
-	unsigned int uiUX1, uiUX2, uiUY1, uiUY2;
+	int iUX1, iUX2, iUY1, iUY2;
 
-	uiUX1 = uiX1;
-	uiUX2 = uiX2;
-	uiUY1 = uiY1;
-	uiUY2 = uiY2;
-	if(uiX1 > uiX2) {
-		uiUX1 = uiX2;
-		uiUX2 = uiX1;
+	iUX1 = iX1;
+	iUX2 = iX2;
+	iUY1 = iY1;
+	iUY2 = iY2;
+	if(iX1 > iX2) {
+		iUX1 = iX2;
+		iUX2 = iX1;
 	}
-	if(uiY1 > uiY2) {
-		uiUY1 = uiY2;
-		uiUY2 = uiY1;
+	if(iY1 > iY2) {
+		iUY1 = iY2;
+		iUY2 = iY1;
 	}
 
-	if(uiUX1 >= this->ucMaxX || uiUY1 >= this->ucMaxY) {
-		return;
+	if(iUX1 < 0) {
+		iUX1 = 0;
+	}
+	if(iUY2 < 0) {
+		iUY2 = 0;
+	}
+	if(iUX2 >= this->ucMaxX) {
+		iUX2 = this->ucMaxX - 1;
+	}
+	if(iUY2 >= this->ucMaxY) {
+		iUY2 = this->ucMaxY - 1;
 	}
 
 	aucCommands[0] = 0x21; //Drawing Line
-		aucCommands[1] = uiUX1;
-		aucCommands[2] = uiUY1;
-		aucCommands[3] = uiUX2;
-		aucCommands[4] = uiUY2;
+		aucCommands[1] = iUX1;
+		aucCommands[2] = iUY1;
+		aucCommands[3] = iUX2;
+		aucCommands[4] = iUY2;
 		aucCommands[5] = (uiColor >> 11) & 0x1F;
 		aucCommands[6] = (uiColor >>  5) & 0x3F;
 		aucCommands[7] =  uiColor        & 0x1F;
@@ -321,12 +330,12 @@ void SSD1331_SPI::DrawCircleFill(const unsigned int uiX, const unsigned int uiY,
 		this->DrawLine(uiX - iX + 1, uiY - iY, uiX + iX - 1, uiY - iY, uiFillColor);
 		this->DrawPixel(uiX + iY, uiY + iX, uiLineColor);
 		this->DrawPixel(uiX - iY, uiY + iX, uiLineColor);
-		if(iY < uiR) {
+		if(iX < uiR) {
 			this->DrawLine(uiX + iY - 1, uiY + iX, uiX - iY + 1, uiY + iX, uiFillColor);
 		}
 		this->DrawPixel(uiX + iY, uiY - iX, uiLineColor);
 		this->DrawPixel(uiX - iY, uiY - iX, uiLineColor);
-		if(iY < uiR) {
+		if(iX < uiR) {
 			this->DrawLine(uiX + iY - 1, uiY - iX, uiX - iY + 1, uiY - iX, uiFillColor);
 		}
 		if(iF >= 0) {

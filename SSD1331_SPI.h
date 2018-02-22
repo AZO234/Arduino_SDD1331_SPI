@@ -15,7 +15,7 @@ class SSD1331_SPI {
 		void SetBrightness(const unsigned char ucBrightness);
 		void Clear(void);
 		void DrawPixel(const unsigned int uiX, const unsigned int uiY, const unsigned int uiColor);
-		void DrawLine(const unsigned int uiX1, const unsigned int uiY1, const unsigned int uiX2, const unsigned int uiY2, const unsigned int uiColor);
+		void DrawLine(const int iX1, const int iY1, const int iX2, const int iY2, const unsigned int uiColor);
 		void DrawRectangle(const unsigned int uiX1, const unsigned int uiY1, const unsigned int uiX2, const unsigned int uiY2, const unsigned int uiColor);
 		void DrawRectangleFill(const unsigned int uiX1, const unsigned int uiY1, const unsigned int uiX2, const unsigned int uiY2, const unsigned int uiLineColor, const unsigned int uiFillColor);
 		void DrawCircle(const unsigned int uiX, const unsigned int uiY, const unsigned int uiR, const unsigned int uiColor);
