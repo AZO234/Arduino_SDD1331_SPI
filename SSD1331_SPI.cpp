@@ -1,6 +1,7 @@
 /* SSD1331 SPI Driver for Arduino IDE by AZO */
 
 #include "SSD1331_SPI.h"
+#include <Arduino.h>
 #include <SPI.h>
 
 SSD1331_SPI::SSD1331_SPI(const unsigned char ucMaxX, const unsigned char ucMaxY, const unsigned char ucNSS, const unsigned char ucDC, const unsigned char ucRES) {
