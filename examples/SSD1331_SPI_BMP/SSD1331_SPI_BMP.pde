@@ -19,8 +19,13 @@ void DisplayImage(class SSD1331_SPI* pDisplay, const int iX, const int iY, const
 
   for(uiY = 0; uiY < ptImage->uiHeight; uiY++) {
     for(uiX = 0; uiX < ptImage->uiWidth; uiX++) {
+#ifdef __AVR__
       uiColor = pgm_read_byte_near(ptImage->pucImageData + uiY * uiLineSize + uiX * 2);
       uiColor |= (unsigned int)pgm_read_byte_near(ptImage->pucImageData + uiY * uiLineSize + uiX * 2 + 1) << 8;
+#else
+      uiColor = ptImage->pucImageData[uiY * uiLineSize + uiX * 2];
+      uiColor |= (unsigned int)ptImage->pucImageData[uiY * uiLineSize + uiX * 2 + 1] << 8;
+#endif
       pDisplay->DrawPixel(iX + uiX, iY + uiY, uiColor);
     }
   }
