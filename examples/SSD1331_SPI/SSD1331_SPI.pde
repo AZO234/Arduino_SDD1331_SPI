@@ -9,5 +9,5 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  oMyDisplay.DrawPixel(random(96), random(64), SSD1331_SPI_RGBTOCOLOR(random(32), random(64), random(32));
+  oMyDisplay.DrawPixel(random(96), random(64), SSD1331_SPI_RGBTOCOLOR(random(32), random(64), random(32)));
 }
