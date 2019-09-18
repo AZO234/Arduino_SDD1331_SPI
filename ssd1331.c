@@ -3,13 +3,13 @@
 #include "ssd1331.h"
 
 static void Lock(SSD1331_t* ptSSD1331) {
+  ptSSD1331->tMemoryBarrier();
   while(*ptSSD1331->ppLock != ptSSD1331) {
-    ptSSD1331->tMemoryBarrier();
     if(!*ptSSD1331->ppLock) {
       *ptSSD1331->ppLock = ptSSD1331;
+      ptSSD1331->tMemoryBarrier();
     }
   }
-  ptSSD1331->tMemoryBarrier();
 }
 
 static void Unlock(SSD1331_t* ptSSD1331) {
