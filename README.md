@@ -1,12 +1,22 @@
 Library of Color OLED modules connect with SSD1331(SPI bus) by AZO
 ==================================================================
-version: v1.0.1(Sep 10, 2019)  
+version: v1.0.1(Sep 19, 2019)  
 http://domisan.sakura.ne.jp/
 
 Library of Color OLED modules connect with SSD1331(SPI bus).
 
+Connect Arduino UNO as follow.
+
+3.3V - VDD  
+ GND - GND  
+  13 - SCK  
+  11 - SDA  
+   9 - RES  
+   8 - DC  
+  10 - CS
+
 First constrast instance of class SSD1331_SPI.  
-Next call Initialize();  
+Next call Initialize(); and initDevice();  
 Then draw with DrawPixel();
 
 Reference
