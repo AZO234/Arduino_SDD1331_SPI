@@ -1,3 +1,7 @@
+#include <stdio.h>
+#include <stdint.h>
+#include <stdbool.h>
+
 #if defined(__AVR__)
 #include <avr/pgmspace.h>
 #elif defined(ESP8266)
@@ -5,49 +9,91 @@
 #else
 #define PROGMEM
 #endif
-#include <SSD1331_SPI.h>
+
+#include <SPI.h>
+
+#include <ssd1331_spi.h>
 #include "bmp.h"
+
+void* pLock = NULL;
 
 extern BMP_t tLala;
 extern BMP_t tXevious;
 
-class SSD1331_SPI oMyDisplay(96, 64, 10, 8, 9);
+SSD1331_SPI oMyDisplay;
 
-void DisplayImage(class SSD1331_SPI* pDisplay, const int iX, const int iY, const BMP_t* ptImage) {
-  unsigned int uiX, uiY;
-  unsigned int uiLineSize;
-  unsigned int uiColor;
-
-  if(!ptImage) {
-    return;
+static void SSD1331_SPI_SetPinIO(const uint8_t u8Pin, const uint8_t u8IOMode) {
+  switch(u8IOMode) {
+  case 0:
+    pinMode(u8Pin, OUTPUT);
+    break;
+  case 1:
+    pinMode(u8Pin, INPUT);
+    break;
+  case 2:
+    pinMode(u8Pin, INPUT_PULLUP);
+    break;
   }
+}
 
-  uiLineSize = ptImage->uiWidth * 2;
+static void SSD1331_SPI_PinOutput(const uint8_t u8Pin, const bool bHigh) {
+  digitalWrite(u8Pin, bHigh ? HIGH : LOW);
+}
 
-  for(uiY = 0; uiY < ptImage->uiHeight; uiY++) {
-    for(uiX = 0; uiX < ptImage->uiWidth; uiX++) {
+static void SSD1331_SPI_Transfer(const uint8_t u8Data) {
+  SPI.transfer(u8Data);
+}
+
+static void SSD1331_SPI_DelayMS(const uint16_t u16MS) {
+  delay(u16MS);
+}
+
+static void SSD1331_SPI_MemoryBarrier(void) {
+}
+
+void DisplayImage(SSD1331_SPI* poDisplay, const int16_t i16X, const int8_t i16Y, const BMP_t* ptImage) {
+  uint16_t u16X, u16Y;
+  uint16_t u16Color, u16LineSize;
+
+  if(poDisplay && ptImage) {
+    u16LineSize = ptImage->u32Width * 2;
+
+    for(u16Y = 0; u16Y < ptImage->u32Height; u16Y++) {
+      for(u16X = 0; u16X < ptImage->u32Width; u16X++) {
 #if defined(__AVR__)
-      uiColor = pgm_read_byte_near(ptImage->pucImageData + uiY * uiLineSize + uiX * 2);
-      uiColor |= (unsigned int)pgm_read_byte_near(ptImage->pucImageData + uiY * uiLineSize + uiX * 2 + 1) << 8;
+        u16Color = pgm_read_byte_near(ptImage->pu8ImageData + u16Y * u16LineSize + u16X * 2);
+        u16Color |= (uint16_t)pgm_read_byte_near(ptImage->pu8ImageData + u16Y * u16LineSize + u16X * 2 + 1) << 8;
 #elif defined(ESP8266)
-      uiColor = 0;
-      memcpy_P(&uiColor, &ptImage->pucImageData[uiY * uiLineSize + uiX * 2], 2);
+        memcpy_P(&u16Color, &ptImage->pu8ImageData[u16Y * u16LineSize + u16X * 2], 2);
 #else
-      uiColor = ptImage->pucImageData[uiY * uiLineSize + uiX * 2];
-      uiColor |= (unsigned int)ptImage->pucImageData[uiY * uiLineSize + uiX * 2 + 1] << 8;
+        u16Color = ptImage->pu8ImageData[u16Y * u16LineSize + u16X * 2];
+        u16Color |= (uint16_t)ptImage->pu8ImageData[u16Y * u16LineSize + u16X * 2 + 1] << 8;
 #endif
-      pDisplay->DrawPixel(iX + uiX, iY + uiY, uiColor);
+        poDisplay->drawPixel(i16X + u16X, i16Y + u16Y, u16Color);
+      }
     }
   }
 }
 
 void setup() {
-  // put your setup code here, to run once:
-  oMyDisplay.Initialize(1);
+  oMyDisplay.initialize(
+    SSD1331_SPI_SetPinIO,
+    SSD1331_SPI_PinOutput,
+    SSD1331_SPI_Transfer,
+    SSD1331_SPI_DelayMS,
+    SSD1331_SPI_MemoryBarrier,
+    &pLock,
+    10, 9, 8, 96, 64, 0xFF
+  );
+
+  SPI.begin();
+  SPI.setDataMode(SPI_MODE3);
+
+  oMyDisplay.initDevice();
+  oMyDisplay.clear();
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
   DisplayImage(&oMyDisplay, 0, 0, &tLala);
   delay(5000);
   DisplayImage(&oMyDisplay, 0, 0, &tXevious);
