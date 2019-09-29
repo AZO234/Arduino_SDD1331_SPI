@@ -1,10 +1,12 @@
-#include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
 
 #include <SPI.h>
 
 #include <ssd1331_spi.h>
+
+#define SSD1331_SPI_WIDTH   96
+#define SSD1331_SPI_HEIGHT  64
 
 void* pLock = NULL;
 
@@ -47,7 +49,7 @@ void setup() {
     SSD1331_SPI_DelayMS,
     SSD1331_SPI_MemoryBarrier,
     &pLock,
-    10, 9, 8, 96, 64, 0xFF
+    10, 9, 8, SSD1331_SPI_WIDTH, SSD1331_SPI_HEIGHT, 0xFF
   );
 
   SPI.begin();
@@ -61,21 +63,21 @@ void loop() {
   switch(0) {
   case 0:
     oMyDisplay.drawPixel(
-      random(96), random(64),
+      random(SSD1331_SPI_WIDTH), random(SSD1331_SPI_HEIGHT),
       SSD1331_SPI_RGBTOCOLOR(random(32), random(64), random(32))
     );
     break;
   case 1:
     oMyDisplay.drawLine(
-      (int16_t)random(192) - 48, (int16_t)random(128) - 32,
-      (int16_t)random(192) - 48, (int16_t)random(128) - 32,
+      (int16_t)random(SSD1331_SPI_WIDTH * 2) - SSD1331_SPI_WIDTH / 2, (int16_t)random(SSD1331_SPI_HEIGHT * 2) - SSD1331_SPI_HEIGHT / 2,
+      (int16_t)random(SSD1331_SPI_WIDTH * 2) - SSD1331_SPI_WIDTH / 2, (int16_t)random(SSD1331_SPI_HEIGHT * 2) - SSD1331_SPI_HEIGHT / 2,
       SSD1331_SPI_RGBTOCOLOR(random(32), random(64), random(32))
     );
     break;
   case 2:
     oMyDisplay.drawRectangle(
-      (int16_t)random(192) - 48, (int16_t)random(128) - 32,
-      (int16_t)random(192) - 48, (int16_t)random(128) - 32,
+      (int16_t)random(SSD1331_SPI_WIDTH * 2) - SSD1331_SPI_WIDTH / 2, (int16_t)random(SSD1331_SPI_HEIGHT * 2) - SSD1331_SPI_HEIGHT / 2,
+      (int16_t)random(SSD1331_SPI_WIDTH * 2) - SSD1331_SPI_WIDTH / 2, (int16_t)random(SSD1331_SPI_HEIGHT * 2) - SSD1331_SPI_HEIGHT / 2,
       SSD1331_SPI_RGBTOCOLOR(random(32), random(64), random(32)),
       false,
       0
@@ -83,8 +85,8 @@ void loop() {
     break;
   case 3:
     oMyDisplay.drawRectangle(
-      (int16_t)random(192) - 48, (int16_t)random(128) - 32,
-      (int16_t)random(192) - 48, (int16_t)random(128) - 32,
+      (int16_t)random(SSD1331_SPI_WIDTH * 2) - SSD1331_SPI_WIDTH / 2, (int16_t)random(SSD1331_SPI_HEIGHT * 2) - SSD1331_SPI_HEIGHT / 2,
+      (int16_t)random(SSD1331_SPI_WIDTH * 2) - SSD1331_SPI_WIDTH / 2, (int16_t)random(SSD1331_SPI_HEIGHT * 2) - SSD1331_SPI_HEIGHT / 2,
       SSD1331_SPI_RGBTOCOLOR(random(32), random(64), random(32)),
       true,
       SSD1331_SPI_RGBTOCOLOR(random(32), random(64), random(32))
@@ -92,8 +94,8 @@ void loop() {
     break;
   case 4:
     oMyDisplay.drawCircle(
-      (int16_t)random(192) - 48, (int16_t)random(128) - 32,
-      random(64),
+      (int16_t)random(SSD1331_SPI_WIDTH * 2) - SSD1331_SPI_WIDTH / 2, (int16_t)random(SSD1331_SPI_HEIGHT * 2) - SSD1331_SPI_HEIGHT / 2,
+      random(SSD1331_SPI_HEIGHT),
       SSD1331_SPI_RGBTOCOLOR(random(32), random(64), random(32)),
       false,
       0
@@ -101,8 +103,8 @@ void loop() {
     break;
   case 5:
     oMyDisplay.drawCircle(
-      (int16_t)random(192) - 48, (int16_t)random(128) - 32,
-      random(64),
+      (int16_t)random(SSD1331_SPI_WIDTH * 2) - SSD1331_SPI_WIDTH / 2, (int16_t)random(SSD1331_SPI_HEIGHT * 2) - SSD1331_SPI_HEIGHT / 2,
+      random(SSD1331_SPI_HEIGHT),
       SSD1331_SPI_RGBTOCOLOR(random(32), random(64), random(32)),
       true,
       SSD1331_SPI_RGBTOCOLOR(random(32), random(64), random(32))

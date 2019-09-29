@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -14,6 +13,9 @@
 
 #include <ssd1331_spi.h>
 #include "bmp.h"
+
+#define SSD1331_SPI_WIDTH   96
+#define SSD1331_SPI_HEIGHT  64
 
 void* pLock = NULL;
 
@@ -83,7 +85,7 @@ void setup() {
     SSD1331_SPI_DelayMS,
     SSD1331_SPI_MemoryBarrier,
     &pLock,
-    10, 9, 8, 96, 64, 0xFF
+    10, 9, 8, SSD1331_SPI_WIDTH, SSD1331_SPI_HEIGHT, 0xFF
   );
 
   SPI.begin();
